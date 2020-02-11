@@ -965,7 +965,8 @@ class ActiveRecord::Base
           elsif column
             if respond_to?(:type_caster)                                         # Rails 5.0 and higher
               type = type_for_attribute(column.name)
-              val = type.type == :boolean ? type.cast(val) : type.serialize(val)
+              #val = type.type == :boolean ? type.cast(val) : type.serialize(val)
+              val = type.is_a?(ActiveModel::Type::Boolean) ? type.cast(val) : type.serialize(val)
               connection_memo.quote(val)
             elsif column.respond_to?(:type_cast_from_user)                       # Rails 4.2
               connection_memo.quote(column.type_cast_from_user(val), column)
